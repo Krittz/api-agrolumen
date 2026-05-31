@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class ListAnimalsAction extends Action
 {
-    #[Override]
     public function __construct(LoggerInterface $logger, private readonly AnimalRepository $animalRepository)
     {
         parent::__construct($logger);

@@ -27,7 +27,7 @@ class CreateAnimalAction extends Action
         $name = trim($body['name'] ?? '');
         $code = trim($body['code'] ?? '');
         $sex = trim($body['sex'] ?? '');
-        $bread = trim($body['bread'] ?? '');
+        $breed = trim($body['breed'] ?? '');
         $birthDate = trim($body['birth_date'] ?? '');
         $status = trim($body['status'] ?? AnimalStatus::ACTIVE->value);
 
@@ -47,7 +47,7 @@ class CreateAnimalAction extends Action
         $animal->name = $name;
         $animal->code = $code;
         $animal->sex = AnimalSex::from($sex);
-        $animal->bread = $bread;
+        $animal->breed = $breed;
         $animal->birth_date = $birthDate;
         $animal->status = AnimalStatus::from($status);
 

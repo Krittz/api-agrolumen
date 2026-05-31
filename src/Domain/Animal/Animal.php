@@ -15,12 +15,12 @@ class Animal extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillale = [
+    protected $fillable = [
         'farm_id',
         'code',
         'name',
         'sex',
-        'bread',
+        'breed',
         'birth_date',
         'status',
     ];
