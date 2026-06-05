@@ -8,8 +8,10 @@ use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 use Monolog\Logger;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+}
 
 return function (ContainerBuilder $containerBuilder) {
 
@@ -22,16 +24,18 @@ return function (ContainerBuilder $containerBuilder) {
                 'logErrorDetails'     => false,
                 'logger' => [
                     'name' => 'slim-app',
-                    'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+                    'path' => getenv('APP_ENV') === 'production'
+                        ? 'php://stdout'
+                        : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
                 ],
                 'db' => [
                     'driver'    => 'mysql',
-                    'host'      => $_ENV['DB_HOST']     ?? '127.0.0.1',
-                    'port'      => $_ENV['DB_PORT']     ?? '3306',
-                    'database'  => $_ENV['DB_DATABASE'] ?? '',
-                    'username'  => $_ENV['DB_USERNAME'] ?? '',
-                    'password'  => $_ENV['DB_PASSWORD'] ?? '',
+                    'host'      => $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: '127.0.0.1',
+                    'port'      => $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: '3306',
+                    'database'  => $_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: '',
+                    'username'  => $_ENV['DB_USERNAME'] ?? getenv('DB_USERNAME') ?: '',
+                    'password'  => $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '',
                     'charset'   => 'utf8mb4',
                     'collation' => 'utf8mb4_unicode_ci',
                     'prefix'    => '',

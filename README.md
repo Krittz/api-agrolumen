@@ -1,42 +1,155 @@
-# Slim Framework 4 Skeleton Application
+# AgroLumen API
 
-[![Coverage Status](https://coveralls.io/repos/github/slimphp/Slim-Skeleton/badge.svg?branch=master)](https://coveralls.io/github/slimphp/Slim-Skeleton?branch=master)
+Backend da plataforma AgroLumen.
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 4 application. This application uses the latest Slim 4 with Slim PSR-7 implementation and PHP-DI container implementation. It also uses the Monolog logger.
+O AgroLumen é um sistema de gestão voltado para produtores rurais, com foco inicial no controle da produção leiteira, propriedades, rebanho e indicadores operacionais.
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
+---
 
-## Install the Application
+## Tecnologias
 
-Run this command from the directory in which you want to install your new Slim Framework application. You will require PHP 7.4 or newer.
+- PHP 8.3
+- Slim Framework 4
+- MySQL 8.4
+- Nginx
+- Docker
+- Docker Compose
+- Monolog
+- PHP-DI
 
-```bash
-composer create-project slim/slim-skeleton [my-app-name]
+---
+
+## Estrutura do Projeto
+
+```text
+backend/
+├── app/
+├── public/
+├── src/
+├── tests/
+├── logs/
+├── vendor/
+├── composer.json
+└── Dockerfile
 ```
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+---
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writable.
+## Requisitos
 
-To run the application in development, you can run these commands 
+- Docker
+- Docker Compose
 
-```bash
-cd [my-app-name]
-composer start
-```
+---
 
-Or you can use `docker-compose` to run the app with `docker`, so you can run these commands:
-```bash
-cd [my-app-name]
-docker-compose up -d
-```
-After that, open `http://localhost:8080` in your browser.
+## Executando o Ambiente
 
-Run this command in the application directory to run the test suite
+Na raiz do projeto:
 
 ```bash
-composer test
+docker compose up -d --build
 ```
 
-That's it! Now go build something cool.
+Verificar containers:
+
+```bash
+docker ps
+```
+
+---
+
+## Health Check
+
+```http
+GET /health
+```
+
+Resposta esperada:
+
+```json
+OK
+```
+
+---
+
+## Variáveis de Ambiente
+
+As configurações são carregadas através do arquivo:
+
+```text
+.env
+```
+
+Exemplo:
+
+```env
+APP_ENV=local
+
+DB_HOST=agrolumen_db
+DB_PORT=3306
+DB_DATABASE=agrolumen
+DB_USERNAME=agrolumen
+DB_PASSWORD=secret
+```
+
+---
+
+## Banco de Dados
+
+O banco MySQL é executado em container Docker.
+
+O serviço utiliza o hostname:
+
+```text
+agrolumen_db
+```
+
+dentro da rede Docker.
+
+---
+
+## Logs
+
+Os logs da aplicação ficam disponíveis em:
+
+```text
+logs/
+```
+
+ou no stdout do container quando executado em ambiente Docker.
+
+Visualizar logs:
+
+```bash
+docker logs -f agrolumen_api
+```
+
+---
+
+## Desenvolvimento
+
+O código-fonte é montado como volume Docker.
+
+Alterações em:
+
+```text
+src/
+app/
+public/
+```
+
+são refletidas automaticamente sem necessidade de rebuild da imagem.
+
+Rebuild é necessário apenas quando houver alterações em:
+
+- Dockerfile
+- composer.json
+- composer.lock
+- Dependências do sistema operacional
+
+---
+
+## Licença
+
+Projeto privado.
+Todos os direitos reservados.
